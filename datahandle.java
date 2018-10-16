@@ -19,7 +19,7 @@ public class datahandle {
 	line = line.replaceAll("NR","0");
         StringTokenizer tokenizer = new StringTokenizer(line);
         String s="";
-	double threshold=0.2;
+	double threshold=0.1;
 	
 	while (tokenizer.hasMoreTokens()) {
 		double total=0,maxVal=-1,minVal=-1;
@@ -61,21 +61,20 @@ public class datahandle {
 			else
 	           		s += ","+ word;
                 }
-		Double F1=new Double(total); 
             	context.write(new Text(s),new DoubleWritable(total/count));
 		s="";
 	}
     }
  } 
         
- public static class Reduce extends Reducer<Text,DoubleWritable, Text, DoubleWritable> {
+ public static class Reduce extends Reducer<Text,DoubleWritable, Text, Text> {
 
     public void reduce(Text key, Iterable<DoubleWritable> values, Context context) 
       throws IOException, InterruptedException {
        
-        for (DoubleWritable val: values) {
-        	context.write(key,new DoubleWritable(val.get()));
-	}
+       // for (DoubleWritable val: values) {
+        	context.write(key,new Text(""));
+	//}
     }
  }
         
